@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+  <testsuite errors="0" failures="0" hostname="xadministrators-MacBook-Pro.local" id="0" name="EdisDataServiceTests" package="edisdataclient" tests="3" time="24.89" timestamp="2011-06-24T19:20:17">
+      <properties />
+
+      <testcase classname="edisdataclient.EdisDataServiceTests" name="testSecretKey" time="11.846" />
+
+      <testcase classname="edisdataclient.EdisDataServiceTests" name="testEndToEnd" time="4.764" />
+
+      <testcase classname="edisdataclient.EdisDataServiceTests" name="testAnonymousDocService" time="8.258" />
+
+      <system-out><![CDATA[--Output from testSecretKey--
+--Output from testEndToEnd--
+--Output from testAnonymousDocService--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testSecretKey--
+--Output from testEndToEnd--
+--Output from testAnonymousDocService--
+]]></system-err>
+
+  </testsuite>
+</testsuites>
