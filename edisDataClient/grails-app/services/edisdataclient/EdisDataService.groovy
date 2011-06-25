@@ -158,8 +158,7 @@ class EdisDataService {
 		return rest.get(contentType:ContentType.BINARY, path:path, headers:headers).data
 	}
  
-	// TODO: make private or extract
-	def applySecurity(params=[:]) {
+	private def applySecurity(params=[:]) {
 		def auth = [:]
 		if (params.username && params.secretKey) {
 			auth << ["Authorization":"Basic " + new Base64Codec().encode(params.username + ":" + params.secretKey)]
@@ -167,8 +166,7 @@ class EdisDataService {
 		return auth
 	}
 	
-	// TODO: make private or extract
-	def buildDoc (xml) {
+	private def buildDoc (xml) {
 		def doc = [:]
 		doc << [id: xml.id.text() as Long]
 		doc << [documentTitle: xml.documentTitle.text()]
@@ -185,8 +183,7 @@ class EdisDataService {
 
 	}
 	
-	// TODO: make private or extract
-	def buildInv (xml) {
+	private def buildInv (xml) {
 		def inv = [:]
 		inv << [investigationNumber: xml.investigationNumber.text()]
 		inv << [investigationPhase: xml.investigationPhase.text()]
@@ -196,8 +193,7 @@ class EdisDataService {
 		return inv
 	}
 		
-	// TODO: make private or extract
-	def buildAtt (xml) {
+	private def buildAtt (xml) {
 		def att = [:]
 		att << [id: xml.id.text()]
 		att << [documentId: xml.documentId.text()]
