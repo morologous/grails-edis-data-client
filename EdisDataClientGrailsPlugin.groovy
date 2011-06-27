@@ -2,19 +2,20 @@ class EdisDataClientGrailsPlugin {
     // the plugin version
     def version = "0.1"
     // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "1.3.7 > *"
+    def grailsVersion = "1.3.5 > *"
     // the other plugins this plugin depends on
-    def dependsOn = [:]
+    def dependsOn = [rest:"0.6.1"]
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
-            "grails-app/views/error.gsp"
+            "grails-app/views/error.gsp",
+            "examples"
     ]
 
     // TODO Fill in these fields
     def author = "Jason Yankus"
     def authorEmail = "jason.yankus@usitc.gov"
     def title = "Grails plugin for EDIS data webservice"
-    def description = '''\\
+    def description = '''
 Easy to use api-based plugin to access the EDIS data web service.
 '''
 
