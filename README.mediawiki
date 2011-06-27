@@ -51,7 +51,7 @@ The ''findInvestigations'' method supports the authentication of users to the ED
 
 '''Return Value'''
 * A List of Maps representing the results of the investigation search.  
-  
+
 ==== findDocuments ====
 
 The ''findDocuments'' method searches for document metadata within the EDIS System.
