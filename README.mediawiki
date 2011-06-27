@@ -1,4 +1,4 @@
-=== EDIS Data Webservice Grails Plugin ===
+== EDIS Data Webservice Grails Plugin ==
 
 The EDIS Data Webservice is a service provided by the United States International Trade Commission.   For more information on either the USITC or EDIS please visit their respective websites (www.usitc.gov or edis.usitc.gov)
 
@@ -8,7 +8,7 @@ The EDIS Data Webservice Grails Plugin is a Grails plugin designed to make using
 
 The EDIS Data Webservice Grails Plugin also supports authenticating to the EDIS Data Webservice.  
 
-==== Common Conventions ====
+=== Common Conventions ===
 
 '''Parameters'''
 
@@ -22,9 +22,9 @@ For service methods that support authentication, the parameters are '''username'
 
 Each of the find methods returns a List of Maps representing the data returned by the EDIS Data Webservice.  The names of the XML elements from the EDIS Data Webservice are transcribed directly to the Map returned.  Please see the EDIS Data Webservice documentation for details on the exact fields returned by each finder.
 
-=== Service Methods ===
+== Service Methods ==
 
-==== secretKey ====
+=== secretKey ===
 
 The ''secretKey'' service method is used to generate the secret key used as a password for the EDIS Data Webservice.   Please see the [[http://www.usitc.gov/docket_services/documents/EDIS3WebServiceGuide.pdf|EDIS Data Webservice documentation]] for details.  
 
@@ -37,7 +37,7 @@ The ''secretKey'' service method is used to generate the secret key used as a pa
 '''Return Value''
 * A String representing the secretKey
 
-==== findInvestigations ====
+=== findInvestigations ===
 
 The ''findInvestigations'' method searches for investigation metadata from the EDIS Data Webservice.
 
@@ -52,7 +52,7 @@ The ''findInvestigations'' method supports the authentication of users to the ED
 '''Return Value'''
 * A List of Maps representing the results of the investigation search.  
 
-==== findDocuments ====
+=== findDocuments ===
 
 The ''findDocuments'' method searches for document metadata within the EDIS System.
 
@@ -69,7 +69,7 @@ The ''findDocuments'' method supports the authentication of users to the EDIS Da
 '''Return Value'''
 * A List of Maps representing the results of the document search
 
-==== findAttachments ====
+=== findAttachments ===
 
 The ''findAttachments'' method searches for metadata related to attachments for a document.
 
@@ -81,7 +81,7 @@ The ''findAttachments'' method supports the authentication of users to the EDIS 
 '''Return Value'''
 * A List of Maps containing attachment metadata.
 
-==== downloadAttachment ====
+=== downloadAttachment ===
 
 The ''downloadAttachment'' method accesses the EDIS Data Webservice and returns the underlying PDF binary for an attachment.
 
@@ -94,9 +94,9 @@ The ''downloadAttachment'' method supports (and requires) the authentication of 
 '''Return Value'''
 * An InputStream used to Stream the contents of the binary PDF. 
 
-=== Examples ===
+== Examples ==
 
-==== Generating a secretKey ====
+=== Generating a secretKey ===
 
 <pre>
 	EdisDataService service
@@ -118,7 +118,7 @@ The ''downloadAttachment'' method supports (and requires) the authentication of 
 	}
 </pre>
 
-==== Finding Documents By Criteria ====
+=== Finding Documents By Criteria ===
 
 <pre>
 	EdisDataService service
@@ -130,7 +130,7 @@ The ''downloadAttachment'' method supports (and requires) the authentication of 
 	}
 </pre>
 
-==== Getting the attachment metadata for a document ====
+=== Getting the attachment metadata for a document ===
 
 <pre>
 	EdisDataService service
@@ -142,7 +142,7 @@ The ''downloadAttachment'' method supports (and requires) the authentication of 
 	}
 </pre>
 
-==== Downloading an attachment binary ====
+=== Downloading an attachment binary ===
 
 <pre>
 	EdisDataService service
