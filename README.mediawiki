@@ -16,7 +16,7 @@ Each method on the EdisDataService accepts some parameters.  In all cases, these
 
 '''Authentication'''
 
-For service methods that support authentication, the parameters are '''username''' and '''secretKey'''.  The Secret Key must be generated from the EDIS user password.  The EDIS Data Webservice Grails Plugin has a method to help generate the Secret Key.  Please see [#secretKey|below] for details.
+For service methods that support authentication, the parameters are '''username''' and '''secretKey'''.  The Secret Key must be generated from the EDIS user password.  The EDIS Data Webservice Grails Plugin has a method to help generate the Secret Key.  Please see [[#secretKey|below]] for details.
 
 '''Property Names'''
 
@@ -26,7 +26,7 @@ Each of the find methods returns a List of Maps representing the data returned b
 
 ==== secretKey ====
 
-The ''secretKey'' service method is used to generate the secret key used as a password for the EDIS Data Webservice.   Please see the [http://www.usitc.gov/docket_services/documents/EDIS3WebServiceGuide.pdf|EDIS Data Webservice documentation] for details.  
+The ''secretKey'' service method is used to generate the secret key used as a password for the EDIS Data Webservice.   Please see the [[http://www.usitc.gov/docket_services/documents/EDIS3WebServiceGuide.pdf|EDIS Data Webservice documentation]] for details.  
 
 '''''This method does not accept or respect the normal authentication information'''''
 
