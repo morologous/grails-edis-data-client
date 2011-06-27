@@ -131,7 +131,7 @@ The ''downloadAttachment'' method supports (and requires) the authentication of 
 <pre>
 	EdisDataService service
 	def showAllMotionDocTitles {
-		def docs = service.findDocuments([documentType:"Motion",username:"fooUser",password:"fbd45fca08df0d04dd3959769089ebbdd8957aff"])
+		def docs = service.findDocuments([documentType:"Motion",username:"fooUser",secretKey:"fbd45fca08df0d04dd3959769089ebbdd8957aff"])
 		docs.each {
 			println "Document " + it.id + " -- " + it.documentTitle
 		}
@@ -154,8 +154,8 @@ The ''downloadAttachment'' method supports (and requires) the authentication of 
 
 <pre>
 	EdisDataService service
-	def donloadAttachment {
-		def data = service.downloadAttachment([documentId:123456, attachmentId:456789,username:"fooUser",password:"fbd45fca08df0d04dd3959769089ebbdd8957aff"])
+	def downloadAttachment {
+		def data = service.downloadAttachment([documentId:123456, attachmentId:456789,username:"fooUser",secretKey:"fbd45fca08df0d04dd3959769089ebbdd8957aff"])
 		def file = File.createTempFile("123456-456789",".pdf")
 		def out = file.newOutputStream()
 		while (data.available()) {
