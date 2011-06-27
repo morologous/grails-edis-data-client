@@ -34,7 +34,7 @@ The ''secretKey'' service method is used to generate the secret key used as a pa
 # username -- Required.  The name of the EDIS user; String
 # password -- Required.  The password for the EDIS user; String
 
-'''Return Value''
+'''Return Value'''
 * A String representing the secretKey
 
 === findInvestigations ===
