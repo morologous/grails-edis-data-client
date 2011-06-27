@@ -2,7 +2,7 @@
 
 The EDIS Data Webservice is a service provided by the United States International Trade Commission.   For more information on either the USITC or EDIS please visit their respective websites (www.usitc.gov or edis.usitc.gov)
 
-Documentation on the EDIS data webserivce can be found [http://www.usitc.gov/docket_services/documents/EDIS3WebServiceGuide.pdf|here]
+Documentation on the EDIS data webserivce can be found [[http://www.usitc.gov/docket_services/documents/EDIS3WebServiceGuide.pdf|here]]
 
 The EDIS Data Webservice Grails Plugin is a Grails plugin designed to make using the EDIS Data Webservice easier.  The EDIS Data Webservice Grails Plugin interacts with the EDIS Data Webservice's REST interface and XML output, returning Maps of data in key-value format.  When more than one result is returned by the EDIS Data Webservice, a List of Maps is returned.
 
