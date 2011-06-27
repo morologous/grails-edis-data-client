@@ -1,0 +1,158 @@
+=== EDIS Data Webservice Grails Plugin ===
+
+The EDIS Data Webservice is a service provided by the United States International Trade Commission.   For more information on either the USITC or EDIS please visit their respective websites (www.usitc.gov or edis.usitc.gov)
+
+Documentation on the EDIS data webserivce can be found [http://www.usitc.gov/docket_services/documents/EDIS3WebServiceGuide.pdf|here]
+
+The EDIS Data Webservice Grails Plugin is a Grails plugin designed to make using the EDIS Data Webservice easier.  The EDIS Data Webservice Grails Plugin interacts with the EDIS Data Webservice's REST interface and XML output, returning Maps of data in key-value format.  When more than one result is returned by the EDIS Data Webservice, a List of Maps is returned.
+
+The EDIS Data Webservice Grails Plugin also supports authenticating to the EDIS Data Webservice.  
+
+==== Common Conventions ====
+
+'''Parameters'''
+
+Each method on the EdisDataService accepts some parameters.  In all cases, these parameters are passed as a Map.  In some cases, the use of any parameters may be entirely optional.  
+
+'''Authentication'''
+
+For service methods that support authentication, the parameters are '''username''' and '''secretKey'''.  The Secret Key must be generated from the EDIS user password.  The EDIS Data Webservice Grails Plugin has a method to help generate the Secret Key.  Please see [#secretKey|below] for details.
+
+'''Property Names'''
+
+Each of the find methods returns a List of Maps representing the data returned by the EDIS Data Webservice.  The names of the XML elements from the EDIS Data Webservice are transcribed directly to the Map returned.  Please see the EDIS Data Webservice documentation for details on the exact fields returned by each finder.
+
+=== Service Methods ===
+
+==== secretKey ====
+
+The ''secretKey'' service method is used to generate the secret key used as a password for the EDIS Data Webservice.   Please see the [http://www.usitc.gov/docket_services/documents/EDIS3WebServiceGuide.pdf|EDIS Data Webservice documentation] for details.  
+
+'''''This method does not accept or respect the normal authentication information'''''
+
+'''Parameters'''
+# username -- Required.  The name of the EDIS user; String
+# password -- Required.  The password for the EDIS user; String
+
+'''Return Value''
+* A String representing the secretKey
+
+==== findInvestigations ====
+
+The ''findInvestigations'' method searches for investigation metadata from the EDIS Data Webservice.
+
+The ''findInvestigations'' method supports the authentication of users to the EDIS Data Webservice
+
+'''Parameters'''
+# investigationNumber -- Optional.  The investigation number (or part of one) to find;  String.
+# investigationPhase -- Optional.  The name of the investigation phase.  Only used in conjunction with investigationNumber.  String
+# investigationType -- Optional.  The name of the investigation type.  String.
+# investigationStatus -- Optional.  The name of the investigation status.  String
+
+'''Return Value'''
+* A List of Maps representing the results of the investigation search.  
+  
+==== findDocuments ====
+
+The ''findDocuments'' method searches for document metadata within the EDIS System.
+
+The ''findDocuments'' method supports the authentication of users to the EDIS Data Webservice
+
+'''Parameters'''
+# id -- Optional.  The document identification number.  String/Numeric
+# securityLevel -- Optional.  The name of the security level.  String
+# investigationNumber -- Optional.  The investigation number to find documents within.  String
+# investigationPhase -- Optional.  The investigation phase name.  String
+# documentType -- Optional.  The document type name.  String
+# firmOrg -- Optional.  The firm/organization name.
+
+'''Return Value'''
+* A List of Maps representing the results of the document search
+
+==== findAttachments ====
+
+The ''findAttachments'' method searches for metadata related to attachments for a document.
+
+The ''findAttachments'' method supports the authentication of users to the EDIS system.
+
+'''Parameters'''
+* documentId -- Required.  The documentId to return attachment metadata for.  String/Numeric
+
+'''Return Value'''
+* A List of Maps containing attachment metadata.
+
+==== downloadAttachment ====
+
+The ''downloadAttachment'' method accesses the EDIS Data Webservice and returns the underlying PDF binary for an attachment.
+
+The ''downloadAttachment'' method supports (and requires) the authentication of users to the EDIS system
+
+'''Parameters'''
+# documentId -- Required.  The document identification number.  String/Numeric
+# attachmentId -- Required.  The attachment identification number.  String/Numeric
+
+'''Return Value'''
+* An InputStream used to Stream the contents of the binary PDF. 
+
+=== Examples ===
+
+==== Generating a secretKey ====
+
+<pre>
+	EdisDataService service
+	def generateSecretKey {
+		def key = service.secretKey([username:"fooUser",password:"fooPassword!23"]
+		println "My secret key " + key
+	}
+
+==== Getting a list of Investigations ====
+
+<pre>
+	EdisDataService service
+	
+	def showAll337Investigations {
+		def	invs = service.findInvestigations([investigationNumber:"337"])
+		invs.each {
+			println "Found investigation: " + it.investigationNumber
+		}
+	}
+</pre>
+
+==== Finding Documents By Criteria ====
+
+<pre>
+	EdisDataService service
+	def showAllMotionDocTitles {
+		def docs = service.findDocuments([documentType:"Motion",username:"fooUser",password:"fbd45fca08df0d04dd3959769089ebbdd8957aff"])
+		docs.each {
+			println "Document " + it.id + " -- " + it.documentTitle
+		}
+	}
+</pre>
+
+==== Getting the attachment metadata for a document ====
+
+<pre>
+	EdisDataService service
+	def showAttachmentIdsForDoc {
+		def atts = service.findAttachments([documentId:123456])
+		atts.each {
+			println it.id
+		}
+	}
+</pre>
+
+==== Downloading an attachment binary ====
+
+<pre>
+	EdisDataService service
+	def donloadAttachment {
+		def data = service.downloadAttachment([documentId:123456, attachmentId:456789,username:"fooUser",password:"fbd45fca08df0d04dd3959769089ebbdd8957aff"])
+		def file = File.createTempFile("123456-456789",".pdf")
+		def out = file.newOutputStream()
+		while (data.available()) {
+			out.write(data.read())
+		}
+		out.close()
+	}
+</pre>
