@@ -33,6 +33,7 @@ class EdisDataService {
 	 * @return the secretKey
 	 */
 	def secretKey(params=[:]) {
+		validateParams(params, ["username","password"])
 		def rest = new RESTClient('https://edis.usitc.gov/data/')
 		def path = 'secretKey/' + params.username
 		def resp = rest.post(path: path, body: [password:params.password], requestContentType : ContentType.URLENC)
@@ -51,7 +52,7 @@ class EdisDataService {
 	 * 
 	 * investigationNumber must be provided if investigationPhase is provided
 	 * 
-	 * @param params the parameters, in map form
+	 * @param params the parameters, in map Êform
 	 * @return
 	 */
 	def findInvestigations(params=[:]) {
@@ -133,6 +134,8 @@ class EdisDataService {
     }
 	
 	def findAttachments(params = [:]) {
+		validateParams(params, ["documentId"])
+		
 		def rest = new RESTClient('https://edis.usitc.gov/data/')
 		
 		def headers = [:]
@@ -149,6 +152,7 @@ class EdisDataService {
 	}
 	
 	def downloadAttachment(params=[:]) {
+		validateParams(params, ["documentId","attachmentId","username","secretKey"])
 		def rest = new RESTClient('https://edis.usitc.gov/data/')
 		
 		def headers = [:]
@@ -158,6 +162,18 @@ class EdisDataService {
 		return rest.get(contentType:ContentType.BINARY, path:path, headers:headers).data
 	}
  
+	private def validateParams(params=[:], requiredParams=[]) {
+		def missingParams = []
+		requiredParams.each {
+			if (!params.get(it)) {
+				missingParams << it
+			}
+		}
+		if (missingParams.size > 0) {
+			throw new IllegalArgumentException("Method call missing required parameters $missingParams")
+		}
+	}
+	
 	private def applySecurity(params=[:]) {
 		def auth = [:]
 		if (params.username && params.secretKey) {

@@ -11,6 +11,38 @@ class EdisDataServiceTests extends GrailsUnitTestCase {
         super.tearDown()
     }
 
+	void testRequiredParamsSecretKey() {
+		try {
+			new EdisDataService().secretKey()
+			fail("Expected required argument validation")
+		} catch (ex) {
+			assertTrue(ex instanceof IllegalArgumentException)
+			assertEquals("Method call missing required parameters [username, password]", ex.getMessage())
+		}		
+	}
+
+	void testRequiredParamsFindAttachment() {
+		try {
+			new EdisDataService().findAttachments()
+			fail("Expected required argument validation")
+		} catch (ex) {
+			assertTrue(ex instanceof IllegalArgumentException)
+			assertEquals("Method call missing required parameters [documentId]", ex.getMessage())
+		}
+	}
+
+	
+	void testRequiredParamsDownloadAttachment() {
+		try {
+			new EdisDataService().downloadAttachment()
+			fail("Expected required argument validation")
+		} catch (ex) {
+			assertTrue(ex instanceof IllegalArgumentException)
+			assertEquals("Method call missing required parameters [documentId, attachmentId, username, secretKey]", ex.getMessage())
+		}
+	}
+
+	
 	void testSecretKey() {
 		EdisDataService svc = new EdisDataService()
 		def result = svc.secretKey([username:'EDISDATACLIENT',password:'3d1sD4t4C1!3nt'])
