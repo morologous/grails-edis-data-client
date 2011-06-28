@@ -72,6 +72,9 @@ class EdisDataService {
 				path += "/" + params.investigationPhase
 			}
 		}
+		if (params.pageNumber) {
+			query << [pageNumber:params.pageNumber]
+		}
 		
 		def invs = []
 		rest.get(contentType.XML, path:"investigation") {
@@ -96,7 +99,7 @@ class EdisDataService {
 	 * 
 	 * @return a list of document maps
 	 */
-    def findDocuments(params=[:]) {		
+  def findDocuments(params=[:]) {		
 		def rest = new RESTClient('https://edis.usitc.gov/data/')
 		
 		def headers = [:]
@@ -118,6 +121,9 @@ class EdisDataService {
 		if (params.firmOrg) {
 			query << [firmOrg:params.firmOrg]
 		}
+		if (params.pageNumber) {
+			query << [pageNumber:params.pageNumber]
+		}
 		
 		def path = "document/"
 		if (params.id) {
@@ -131,7 +137,7 @@ class EdisDataService {
 			docs << buildDoc(it)
 		}
 		return docs
-    }
+  }
 	
 	def findAttachments(params = [:]) {
 		validateParams(params, ["documentId"])
