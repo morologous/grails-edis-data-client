@@ -93,7 +93,7 @@ The ''findAttachments'' method supports the authentication of users to the EDIS 
 
 The ''downloadAttachment'' method accesses the EDIS Data Webservice and returns the underlying PDF binary for an attachment.
 
-The ''downloadAttachment'' method supports (and requires) the authentication of users to the EDIS system
+The ''downloadAttachment'' method requires the authentication of users to the EDIS system
 
 '''Parameters'''
 # documentId -- Required.  The document identification number.  String/Numeric
