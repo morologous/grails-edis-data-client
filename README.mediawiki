@@ -30,6 +30,22 @@ For service methods that support authentication, the parameters are '''username'
 
 Each of the find methods returns a List of Maps representing the data returned by the EDIS Data Webservice.  The names of the XML elements from the EDIS Data Webservice are transcribed directly to the Map returned.  Please see the EDIS Data Webservice documentation for details on the exact fields returned by each finder.
 
+'''Date Parameters'''
+
+The EDIS Data Webservice supports a few date comparison types, EXACT, BEFORE, AFTER and BETWEEN.  The date comparison data must be represented in a Stringy format.  This plugin hopes to make that easier to use by adapting it to a map format.
+
+For BEFORE, AFTER and EXACT, create a map like this:
+<pre>
+  def dateComparo = [comparisonType:"EXACT",date:"2001-01-01"]
+  def params = [officialReceivedDate:dateComparo]
+</pre>
+
+For BETWEEN, use a map like this:
+<pre>
+  def dateComparo = [comparisonType:"BETWEEN",toDate:"2001-01-01",fromDate:"2002-01-01"]
+  def params = [modifiedDate:dateComparo]
+</pre>
+
 == Service Methods ==
 
 === secretKey ===
@@ -73,6 +89,8 @@ The ''findDocuments'' method supports the authentication of users to the EDIS Da
 # investigationPhase -- Optional.  The investigation phase name.  String
 # documentType -- Optional.  The document type name.  String
 # firmOrg -- Optional.  The firm/organization name.
+# officialReceivedDate -- Optional.  The official received date comparison param
+# modifiedDate -- Optional.  The modified date date comparison param
 
 '''Return Value'''
 * A List of Maps representing the results of the document search
