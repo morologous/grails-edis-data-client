@@ -22,6 +22,16 @@ class EdisDataService {
 	
     static transactional = false
 
+	String edisDataWebserviceUrl// = "https://edis.usitc.gov/data"
+	
+	private def createRESTClient(params=[:]) {
+		def webserviceURL = "https://edis.usitc.gov/data/"
+		if (params.baseURL) {
+			webserviceURL = params.baseURL
+		}
+		return new RESTClient(webserviceURL);
+	}
+	
 	/**
 	 * Generate a secret key for later use
 	 * 
@@ -34,7 +44,7 @@ class EdisDataService {
 	 */
 	def secretKey(params=[:]) {
 		validateParams(params, ["username","password"])
-		def rest = new RESTClient('https://edis.usitc.gov/data/')
+		def rest = createRESTClient(params)
 		def path = 'secretKey/' + params.username
 		def resp = rest.post(path: path, body: [password:params.password], requestContentType : ContentType.URLENC)
 		return resp.data.secretKey.text()
@@ -56,7 +66,7 @@ class EdisDataService {
 	 * @return
 	 */
 	def findInvestigations(params=[:]) {
-		def rest = new RESTClient('https://edis.usitc.gov/data/')
+		def rest = createRESTClient(params)
 		
 		def query = [:]
 		if (params.investigationType) {
@@ -100,7 +110,7 @@ class EdisDataService {
 	 * @return a list of document maps
 	 */
     def findDocuments(params=[:]) {		
-		def rest = new RESTClient('https://edis.usitc.gov/data/')
+		def rest = createRESTClient(params)
 		
 		def headers = [:]
 		headers << applySecurity(params)
@@ -148,7 +158,7 @@ class EdisDataService {
 	def findAttachments(params = [:]) {
 		validateParams(params, ["documentId"])
 		
-		def rest = new RESTClient('https://edis.usitc.gov/data/')
+		def rest = createRESTClient(params)
 		
 		def headers = [:]
 		headers << applySecurity(params)
@@ -165,7 +175,7 @@ class EdisDataService {
 	
 	def downloadAttachment(params=[:]) {
 		validateParams(params, ["documentId","attachmentId","username","secretKey"])
-		def rest = new RESTClient('https://edis.usitc.gov/data/')
+		def rest = createRESTClient(params)
 		
 		def headers = [:]
 		headers << applySecurity(params)
