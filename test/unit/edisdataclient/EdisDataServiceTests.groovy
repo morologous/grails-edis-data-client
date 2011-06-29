@@ -11,6 +11,13 @@ class EdisDataServiceTests extends GrailsUnitTestCase {
         super.tearDown()
     }
 
+	void testDateParamsDecode() {
+		def docs = new EdisDataService().findDocuments([officialReceivedDate:[comparisonType:"EXACT",date:"2011-06-27"]])
+		docs.each {
+			assertEquals("6/27/11", it.officialReceivedDate.getDateString())
+		}
+	}
+	
 	void testRequiredParamsSecretKey() {
 		try {
 			new EdisDataService().secretKey()

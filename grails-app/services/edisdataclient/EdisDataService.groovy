@@ -75,7 +75,7 @@ class EdisDataService {
 		if (params.pageNumber) {
 			query << [pageNumber:params.pageNumber]
 		}
-		
+
 		def invs = []
 		rest.get(contentType.XML, path:"investigation") {
 			resp, xml ->
@@ -99,7 +99,7 @@ class EdisDataService {
 	 * 
 	 * @return a list of document maps
 	 */
-  def findDocuments(params=[:]) {		
+    def findDocuments(params=[:]) {		
 		def rest = new RESTClient('https://edis.usitc.gov/data/')
 		
 		def headers = [:]
@@ -124,7 +124,13 @@ class EdisDataService {
 		if (params.pageNumber) {
 			query << [pageNumber:params.pageNumber]
 		}
-		
+		if (params.officialReceivedDate) {
+			query << [officialReceivedDate:decodeDateParam(params.officialReceivedDate)]
+		}
+		if (params.modifiedDate) {
+			query << [modifiedDate:decodeDateParam(params.modifiedDate)]
+		}
+
 		def path = "document/"
 		if (params.id) {
 			path = path + params.id
@@ -137,7 +143,7 @@ class EdisDataService {
 			docs << buildDoc(it)
 		}
 		return docs
-  }
+    }
 	
 	def findAttachments(params = [:]) {
 		validateParams(params, ["documentId"])
@@ -168,6 +174,20 @@ class EdisDataService {
 		return rest.get(contentType:ContentType.BINARY, path:path, headers:headers).data
 	}
  
+	private def decodeDateParam(params=[:]) {
+		switch(params.comparisonType) {
+			case "BETWEEN": 
+				 return params.comparisonType + ":" + params.toDate + ":" + params.fromDate
+			case "BEFORE":
+			case "AFTER":
+			case "EXACT":
+				return params.comparisonType+ ":" + params.date
+			default:
+				throw new IllegalArgumentException("Date Parameter values incorrect: $params.comparisonType not a valid comparisonType")
+		}
+			
+	}
+	
 	private def validateParams(params=[:], requiredParams=[]) {
 		def missingParams = []
 		requiredParams.each {
