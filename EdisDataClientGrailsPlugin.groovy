@@ -27,8 +27,6 @@ Easy to use api-based plugin to access the EDIS data web service.
     }
 
     def doWithSpring = {
-    	// TODO Implement runtime spring config (optional)
-		edisDataWebserviceUrl(java.lang.String, "https://edis.usitc.gov/data/")
     }
 
     def doWithDynamicMethods = { ctx ->

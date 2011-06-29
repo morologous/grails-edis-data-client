@@ -22,8 +22,6 @@ class EdisDataService {
 	
     static transactional = false
 
-	String edisDataWebserviceUrl// = "https://edis.usitc.gov/data"
-	
 	private def createRESTClient(params=[:]) {
 		def webserviceURL = "https://edis.usitc.gov/data/"
 		if (params.baseURL) {
