@@ -5,7 +5,6 @@ import grails.test.*
 class EdisDataServiceTests extends GrailsUnitTestCase {
 	EdisDataService edisDataService = new EdisDataService();
 	
-	
 	void testRequiredParamsSecretKey() {
 		try {
 			edisDataService.secretKey()

@@ -7,11 +7,12 @@ class EndToEndTests extends GroovyTestCase {
 	
 	
 	void testEndToEnd() {
-		def secretKey = "7c07ecc23fb8c1115e1b22c7a3a822fa5fa2b894"
+		def secretKey = "e70cd3eae9f06e2cda5f9864853a29ac9ebe8ccd"
 		def username = "EDISDATACLIENT"
 		def docId = 147025
 		def docs = edisDataService.findDocuments([username:username, secretKey:secretKey, id:docId])
 		def doc = docs[0]
+		
 		
 		def atts = edisDataService.findAttachments([username:username, secretKey:secretKey, documentId:doc.id])
 		def att = atts[0]
