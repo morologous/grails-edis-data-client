@@ -1,10 +1,9 @@
 package edisdataclient
 
-import org.codehaus.groovy.grails.plugins.codecs.Base64Codec;
-
 import groovyx.net.http.ContentType
-import groovyx.net.http.HTTPBuilder
-import groovyx.net.http.RESTClient;
+import groovyx.net.http.RESTClient
+
+import org.codehaus.groovy.grails.plugins.codecs.Base64Codec
 
 /**
  * 
@@ -16,15 +15,23 @@ import groovyx.net.http.RESTClient;
 class EdisDataService {
 
 	// TODO: convert this to a "Category" http://www.packtpub.com/article/metaprogramming-and-groovy-mop
-	{
-		Convert.from(String).to(Date).using({ value -> new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss').parse(value) })
+	//{
+	//	Convert.from(String).to(Date).using({ value -> new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss').parse(value) })
+	//}
+	static transactional = false
+	
+	static format = new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss')
+	static def convertStringToDate = { str -> 
+		if (str) {
+			format.parse(str)
+		} else {
+			null
+		}
 	}
 	
-    static transactional = false
-
 	private def createRESTClient(params=[:]) {
 		def webserviceURL = "https://edis.usitc.gov/data/"
-		if (params.baseURL) {
+		if (params.baseURL && params.baseURL.length() > 0) {
 			webserviceURL = params.baseURL
 		}
 		return new RESTClient(webserviceURL);
@@ -144,12 +151,14 @@ class EdisDataService {
 			path = path + params.id
 		} 
 		
-		def resp = rest.get(contentType: ContentType.XML, path:path, query:query, headers:headers)	
-
 		def docs = []
-		resp.data.documents.document.each {
-			docs << buildDoc(it)
+		def resp = rest.get(contentType: ContentType.XML, path:path, query:query, headers:headers) {
+			resp, xml ->
+			xml.documents.document.each {
+				docs << buildDoc(it)
+			}
 		}
+
 		return docs
     }
 	
@@ -179,7 +188,8 @@ class EdisDataService {
 		headers << applySecurity(params)
 		
 		def path = "download/" + params.documentId + "/" + params.attachmentId
-		return rest.get(contentType:ContentType.BINARY, path:path, headers:headers).data
+		def resp = rest.get(contentType:ContentType.BINARY, path:path, headers:headers)
+		return resp.data
 	}
  
 	private def decodeDateParam(params=[:]) {
@@ -225,9 +235,9 @@ class EdisDataService {
 		doc << [firmOrganization: xml.firmOrganization.text()]
 		doc << [filedBy: xml.filedBy.text()]
 		doc << [onBehalfOf: xml.onBehalfOf.text()]
-		doc << [documentDate: xml.documentDate.text() as Date]
-		doc << [officialReceivedDate: xml.officialReceivedDate.text() as Date]
-		doc << [modifiedDate: xml.modifiedDate.text() as Date]
+		doc << [documentDate: convertStringToDate(xml.documentDate.text()) as Date]
+		doc << [officialReceivedDate: convertStringToDate(xml.officialReceivedDate.text()) as Date]
+		doc << [modifiedDate: convertStringToDate(xml.modifiedDate.text()) as Date]
 		doc << [investigation: buildInv(xml)]
 		return doc
 
@@ -255,9 +265,9 @@ class EdisDataService {
 		if (xml.pageCount.text()) {
 			att << [pageCount: xml.pageCount.text() as Long]
 		}
-		att << [createDate: xml.createDate.text() as Date]
+		att << [createDate: convertStringToDate(xml.createDate.text()) as Date]
 		if (xml.lastModifiedDate.text()) {
-			att << [lastModifiedDate: xml.lastModifiedDate.text() as Date]
+			att << [lastModifiedDate: convertStringToDate(xml.lastModifiedDate.text()) as Date]
 		}
 		return att
 	}
