@@ -75,12 +75,15 @@ class EdisDataService {
 		
 		def query = [:]
 		if (params.investigationType) {
-			query << [investigationType:investigationType]
+			query << [investigationType:params.investigationType]
 		}
 		if (params.investigationStatus) {
-			query << [investigationStatus:investigationStatus]
+			query << [investigationStatus:params.investigationStatus]
 		}
-		path = "investigation/"
+		if (params.investigationId) {
+			query << [investigationId:params.investigationId]
+		}
+		def path = "investigation/"
 		if (params.investigationNumber) {
 			path += params.investigationNumber 
 			if (params.investigationPhase) {
@@ -92,7 +95,7 @@ class EdisDataService {
 		}
 
 		def invs = []
-		rest.get(contentType.XML, path:"investigation") {
+		rest.get(contentType:ContentType.XML, path:path, query:query) {
 			resp, xml ->
 			xml.investigations.investigation.each {
 				invs << buildInv(it)
@@ -250,6 +253,9 @@ class EdisDataService {
 		inv << [investigationStatus: xml.investigationStatus.text()]
 		inv << [investigationTitle: xml.investigationTitle.text()]
 		inv << [investigationType: xml.investigationType.text()]
+		if (xml.investigationId.text()) {
+			inv << [investigationId: xml.investigationId.text() as Long]
+		}
 		return inv
 	}
 		
