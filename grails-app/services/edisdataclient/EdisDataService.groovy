@@ -3,6 +3,8 @@ package edisdataclient
 import groovyx.net.http.ContentType
 import groovyx.net.http.RESTClient
 
+import java.text.SimpleDateFormat
+
 import org.codehaus.groovy.grails.plugins.codecs.Base64Codec
 
 /**
@@ -15,15 +17,18 @@ import org.codehaus.groovy.grails.plugins.codecs.Base64Codec
 class EdisDataService {
 
 	// TODO: convert this to a "Category" http://www.packtpub.com/article/metaprogramming-and-groovy-mop
-	//{
-	//	Convert.from(String).to(Date).using({ value -> new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss').parse(value) })
-	//}
+	{
+		Convert.from(String).to(Date).using({ value -> new java.text.SimpleDateFormat(determineDateFormat(value)).parse(value) })
+	}
+	
 	static transactional = false
 	
-	static format = new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss')
 	static def convertStringToDate = { str -> 
 		if (str) {
-			format.parse(str)
+			def divinedFormat = determineDateFormat(str)
+			if (divinedFormat) {
+				new SimpleDateFormat(divinedFormat).parse(str)
+			}
 		} else {
 			null
 		}
@@ -278,5 +283,21 @@ class EdisDataService {
 		return att
 	}
 	
+	private static def determineDateFormat (dateString) {
+		
+		def dtFrmtRegX = [:]
+		dtFrmtRegX << ["^\\d{4}-\\d{2}-\\d{2}\\s\\d{1,2}:\\d{2}:\\d{2}\\.\\d{1,}\$" : 'yyyy-MM-dd HH:mm:ss.S'] // 2011-08-17 14:19:45.0
+		dtFrmtRegX << ["^[a-z]{3}\\s[a-z]{3}\\s\\d{1,2}\\s\\d{1,2}:\\d{2}:\\d{2}\\s[a-z]{3}\\s\\d{4}\$" : 'EEE MMM dd hh:mm:ss zzz yyyy']  // Fri Aug 05 00:00:00 EDT 2011
+		dtFrmtRegX << ["^\\d{4}-\\d{2}-\\d{2}\\s\\d{1,2}:\\d{2}:\\d{2}\$" : 'yyyy-MM-dd HH:mm:ss'] // 2011-08-17 14:19:45.0
+		dtFrmtRegX << ["^\\d{4}\\/\\d{2}\\/\\d{2}\\s\\d{1,2}:\\d{2}:\\d{2}\$" : 'yyyy/MM/dd HH:mm:ss'] // 2012/06/05 09:38:48
+		
+		
+		for (String regexp : dtFrmtRegX.keySet()) {
+			if (dateString.toLowerCase().matches(regexp)) {
+				return dtFrmtRegX.get(regexp)
+			}
+		}
+		return null // Unknown format.
+	}
 	
 }
