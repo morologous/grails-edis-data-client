@@ -17,9 +17,10 @@ Easy to use api-based plugin to access the EDIS data web service.
     <repository name='Codehaus' url='http://repository.codehaus.org/' />
   </repositories>
   <dependencies>
-    <runtime>
+    <compile>
       <dependency group='org.grails.plugins' name='rest' version='0.7' />
-    </runtime>
+      <dependency group='org.codehaus.groovy.modules.http-builder' name='http-builder' version='0.5.1' />
+    </compile>
   </dependencies>
   <plugins />
   <runtimePluginRequirements>
