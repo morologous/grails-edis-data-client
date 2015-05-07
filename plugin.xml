@@ -1,4 +1,4 @@
-<plugin name='edis-data-client' version='0.3.3' grailsVersion='1.3.5 &gt; *'>
+<plugin name='edis-data-client' version='0.3.4' grailsVersion='1.3.5 &gt; *'>
   <author>Jason Yankus</author>
   <authorEmail>jason.yankus@usitc.gov</authorEmail>
   <title>Grails plugin for EDIS data webservice</title>
@@ -18,8 +18,8 @@ Easy to use api-based plugin to access the EDIS data web service.
   </repositories>
   <dependencies>
     <compile>
-      <dependency group='org.grails.plugins' name='rest' version='0.7' />
       <dependency group='org.codehaus.groovy.modules.http-builder' name='http-builder' version='0.5.1' />
+      <dependency group='org.grails.plugins' name='rest' version='0.7' />
     </compile>
   </dependencies>
   <plugins />

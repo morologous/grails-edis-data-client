@@ -16,6 +16,8 @@ import org.codehaus.groovy.grails.plugins.codecs.Base64Codec
  */
 class EdisDataService {
 
+	def grailsApplication
+
 	// TODO: convert this to a "Category" http://www.packtpub.com/article/metaprogramming-and-groovy-mop
 	{
 		Convert.from(String).to(Date).using({ value -> new java.text.SimpleDateFormat(determineDateFormat(value)).parse(value) })
@@ -35,7 +37,12 @@ class EdisDataService {
 	}
 	
 	private def createRESTClient(params=[:]) {
-		def webserviceURL = "https://edis.usitc.gov/data/"
+		def scheme = grailsApplication.config.edis?.dataws?.scheme?:'https'
+		def host = grailsApplication.config.edis?.dataws?.host?:'edis.usitc.gov'
+		def port = grailsApplication.config.edis?.dataws?.port?:'443'
+		def app = grailsApplication.config.edis?.dataws?.app?:'data'
+
+		def webserviceURL = "${scheme}://${host}:${port}/${app}/"
 		if (params.baseURL && params.baseURL.length() > 0) {
 			webserviceURL = params.baseURL
 		}
